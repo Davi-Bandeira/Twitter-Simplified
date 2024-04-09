@@ -9,6 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LoginResponse {
 
-    String accessToken;
-    Long expiresIn;
+    private String accessToken;
+    private Long expiresIn;
 }
