@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import project.springsecurity.dto.LoginRequest;
 import project.springsecurity.dto.LoginResponse;
+import project.springsecurity.entity.Role;
 import project.springsecurity.repository.UserRepository;
 
 import java.time.Instant;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -36,12 +38,15 @@ public class TokenController {
         }
 
         var user = optionalUser.get();
+        var scopes = user.getRoles().stream().map(Role::getName)
+                .collect(Collectors.joining(" "));
 
         var claims = JwtClaimsSet.builder()
                 .issuer("mybackend")
                 .subject(user.getId().toString())
-                .expiresAt(now.plusSeconds(expiresIn))
                 .issuedAt(now)
+                .expiresAt(now.plusSeconds(expiresIn))
+                .claim("scope", scopes)
                 .build();
 
         var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
