@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -16,6 +17,7 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "tweets")
 public class Tweet {
 
@@ -31,4 +33,9 @@ public class Tweet {
 
     @CreationTimestamp
     private Instant creationTimestamp;
+
+    public Tweet(User user, String content) {
+        this.user = user;
+        this.content = content;
+    }
 }
